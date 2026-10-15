@@ -1,0 +1,21 @@
+name: build-win64
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Lazarus
+        shell: cmd
+        run: choco install lazarus -y --no-progress
+      - name: Build
+        shell: cmd
+        run: "C:/lazarus/lazbuild.exe" bb10mt.lpi
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: bb10mt-win64
+          path: bb10mt.exe
+          if-no-files-found: error
